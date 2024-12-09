@@ -1,0 +1,5 @@
+C:\Users\informatica.asta\source\repos\ServidorTareas\ServidorTareas\obj\Debug\net8.0\ServidorTareas.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\informatica.asta\source\repos\ServidorTareas\ServidorTareas\obj\Debug\net8.0\ServidorTareas.AssemblyInfoInputs.cache
+C:\Users\informatica.asta\source\repos\ServidorTareas\ServidorTareas\obj\Debug\net8.0\ServidorTareas.AssemblyInfo.cs
+C:\Users\informatica.asta\source\repos\ServidorTareas\ServidorTareas\obj\Debug\net8.0\ServidorTareas.csproj.CoreCompileInputs.cache
+C:\Users\informatica.asta\source\repos\ServidorTareas\ServidorTareas\obj\Debug\net8.0\ServidorTareas.csproj.AssemblyReference.cache
