@@ -10,7 +10,7 @@ El **Sistema de Gestión de Tareas** es una aplicación distribuida diseñada pa
 - 📋 **Listar** todas las tareas existentes.  
 - 🛠️ **Modificar** tareas según las necesidades del usuario.  
 - 🗑️ **Eliminar** tareas que ya no sean necesarias.  
-- 🌐 **Arquitectura SOA**: Comunicación mediante servicios SOAP o REST.  
+- 🌐 **Arquitectura SOA**: Comunicación mediante servicios SOAP   
 - ⚡ **Programación Asíncrona**: Optimización del rendimiento en la gestión de recursos compartidos.  
 - 🖥️ **Interfaz de Usuario Intuitiva**: Experiencia amigable y sencilla para interactuar con el sistema.
 
