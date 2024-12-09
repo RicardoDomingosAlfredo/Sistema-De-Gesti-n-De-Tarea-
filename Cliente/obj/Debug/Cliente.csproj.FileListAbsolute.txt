@@ -1,0 +1,10 @@
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\bin\Debug\Cliente.exe.config
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\bin\Debug\Cliente.exe
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\bin\Debug\Cliente.pdb
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\obj\Debug\Cliente.csproj.AssemblyReference.cache
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\obj\Debug\Cliente.Form1.resources
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\obj\Debug\Cliente.Properties.Resources.resources
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\obj\Debug\Cliente.csproj.GenerateResource.cache
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\obj\Debug\Cliente.csproj.CoreCompileInputs.cache
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\obj\Debug\Cliente.exe
+C:\Users\informatica.asta\source\repos\Cliente\Cliente\obj\Debug\Cliente.pdb
