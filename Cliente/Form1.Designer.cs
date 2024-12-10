@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Windows.Forms;
+using Cliente.Data;
+using System.Threading.Tasks;
 
 namespace Cliente
 {
@@ -6,8 +10,6 @@ namespace Cliente
     {
         private System.ComponentModel.IContainer components = null;
 
-        
-        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -29,19 +31,15 @@ namespace Cliente
             this.btnEliminarTarea = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            
-            // btnCrearTarea
-            
+
             this.btnCrearTarea.Location = new System.Drawing.Point(27, 105);
             this.btnCrearTarea.Name = "btnCrearTarea";
             this.btnCrearTarea.Size = new System.Drawing.Size(75, 23);
             this.btnCrearTarea.TabIndex = 0;
             this.btnCrearTarea.Text = "CrearTarea";
             this.btnCrearTarea.UseVisualStyleBackColor = true;
-            this.btnCrearTarea.Click += new System.EventHandler(this.button1_Click);
-            
-            // btnListarTarea
-            
+            this.btnCrearTarea.Click += new System.EventHandler(this.btnCrearTarea_Click);
+
             this.btnListarTarea.Location = new System.Drawing.Point(167, 105);
             this.btnListarTarea.Name = "btnListarTarea";
             this.btnListarTarea.Size = new System.Drawing.Size(75, 23);
@@ -49,9 +47,7 @@ namespace Cliente
             this.btnListarTarea.Text = "ListarTarea";
             this.btnListarTarea.UseVisualStyleBackColor = true;
             this.btnListarTarea.Click += new System.EventHandler(this.btnListarTarea_Click);
-            
-            // btnModificarTarea
-          
+
             this.btnModificarTarea.Location = new System.Drawing.Point(27, 161);
             this.btnModificarTarea.Name = "btnModificarTarea";
             this.btnModificarTarea.Size = new System.Drawing.Size(100, 23);
@@ -59,25 +55,18 @@ namespace Cliente
             this.btnModificarTarea.Text = "ModificarTarea";
             this.btnModificarTarea.UseVisualStyleBackColor = true;
             this.btnModificarTarea.Click += new System.EventHandler(this.btnModificarTarea_Click);
-            
-            // textBox1
-            
+
             this.textBox1.Location = new System.Drawing.Point(52, 45);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(174, 20);
             this.textBox1.TabIndex = 3;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            
-            // dataGridView1
-            
+
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(27, 265);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(240, 150);
             this.dataGridView1.TabIndex = 4;
-            
-            // btnEliminarTarea
-             
+
             this.btnEliminarTarea.Location = new System.Drawing.Point(167, 161);
             this.btnEliminarTarea.Name = "btnEliminarTarea";
             this.btnEliminarTarea.Size = new System.Drawing.Size(75, 23);
@@ -85,9 +74,7 @@ namespace Cliente
             this.btnEliminarTarea.Text = "EliminarTarea";
             this.btnEliminarTarea.UseVisualStyleBackColor = true;
             this.btnEliminarTarea.Click += new System.EventHandler(this.btnEliminarTarea_Click);
-             
-            // Form1
-            
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(320, 450);
@@ -105,11 +92,6 @@ namespace Cliente
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         private System.Windows.Forms.Button btnCrearTarea;
@@ -120,4 +102,3 @@ namespace Cliente
         private System.Windows.Forms.Button btnEliminarTarea;
     }
 }
-

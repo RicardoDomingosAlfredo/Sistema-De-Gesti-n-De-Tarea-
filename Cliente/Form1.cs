@@ -1,105 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using Cliente.Data;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Cliente
 {
     public partial class Form1 : Form
     {
-        // Simulação de uma lista de tarefas
-        private List<Tarefa> tarefas = new List<Tarefa>();
+        private TaskDbContext context;
 
         public Form1()
         {
             InitializeComponent();
+            context = new TaskDbContext();
         }
 
-        // Evento para criar uma nova tarefa
-        private void button1_Click(object sender, EventArgs e)
+        private async void btnCrearTarea_Click(object sender, EventArgs e)
         {
-            string nomeTarefa = textBox1.Text;
-            if (!string.IsNullOrWhiteSpace(nomeTarefa))
+            var tarea = new Tarea()
             {
-                var novaTarefa = new Tarefa
-                {
-                    Id = tarefas.Count + 1,
-                    Nome = nomeTarefa,
-                    DataCriacao = DateTime.Now
-                };
-                tarefas.Add(novaTarefa);
+                Title = textBox1.Text,
+                Description = "Descripción predeterminada",
+                IsCompleted = false
+            };
 
-                MessageBox.Show("Tarefa criada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                AtualizarLista();
-                textBox1.Clear();
+            context.Tareas.Add(tarea);
+            await context.SaveChangesAsync();
+
+            MessageBox.Show("Tarea creada exitosamente");
+            textBox1.Clear();
+        }
+
+        private async void btnListarTarea_Click(object sender, EventArgs e)
+        {
+            var tareas = await context.Tareas.ToListAsync();
+            dataGridView1.DataSource = tareas;
+        }
+
+        private async void btnModificarTarea_Click(object sender, EventArgs e)
+        {
+            int tareaId = 1;
+            var tarea = await context.Tareas.FindAsync(tareaId);
+
+            if (tarea != null)
+            {
+                tarea.Title = textBox1.Text;
+                await context.SaveChangesAsync();
+
+                MessageBox.Show("Tarea modificada exitosamente");
             }
             else
             {
-                MessageBox.Show("O nome da tarefa não pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Tarea no encontrada");
             }
         }
 
-        // Evento para listar tarefas
-        private void btnListarTarea_Click(object sender, EventArgs e)
+        private async void btnEliminarTarea_Click(object sender, EventArgs e)
         {
-            AtualizarLista();
-        }
+            int tareaId = 1;
+            var tarea = await context.Tareas.FindAsync(tareaId);
 
-        // Evento para modificar uma tarefa
-        private void btnModificarTarea_Click(object sender, EventArgs e)
-        {
-            if (tarefas.Count == 0)
+            if (tarea != null)
             {
-                MessageBox.Show("Nenhuma tarefa para modificar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+                context.Tareas.Remove(tarea);
+                await context.SaveChangesAsync();
 
-            string nomeAtualizado = textBox1.Text;
-            if (!string.IsNullOrWhiteSpace(nomeAtualizado))
-            {
-                var tarefa = tarefas[0]; // Para este exemplo, modifica a primeira tarefa
-                tarefa.Nome = nomeAtualizado;
-
-                MessageBox.Show("Tarefa modificada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                AtualizarLista();
-                textBox1.Clear();
+                MessageBox.Show("Tarea eliminada exitosamente");
             }
             else
             {
-                MessageBox.Show("O nome atualizado não pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Tarea no encontrada");
             }
         }
-
-        // Evento para excluir uma tarefa
-        private void btnEliminarTarea_Click(object sender, EventArgs e)
-        {
-            if (tarefas.Count > 0)
-            {
-                tarefas.RemoveAt(0); // Para este exemplo, remove a primeira tarefa
-                MessageBox.Show("Tarefa removida com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                AtualizarLista();
-            }
-            else
-            {
-                MessageBox.Show("Nenhuma tarefa para excluir.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Atualiza a lista de tarefas no ListBox
-        private void AtualizarLista()
-        {
-            listBox1.Items.Clear();
-            foreach (var tarefa in tarefas)
-            {
-                listBox1.Items.Add($"ID: {tarefa.Id}, Nome: {tarefa.Nome}, Criada em: {tarefa.DataCriacao}");
-            }
-        }
-    }
-
-    // Classe Tarefa para simulação
-    public class Tarefa
-    {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public DateTime DataCriacao { get; set; }
     }
 }
