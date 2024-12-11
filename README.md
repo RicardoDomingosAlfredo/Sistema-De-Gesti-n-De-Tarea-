@@ -10,14 +10,8 @@ El **Sistema de Gestión de Tareas** es una aplicación distribuida diseñada pa
 - 📋 **Listar** todas las tareas existentes.  
 - 🛠️ **Modificar** tareas según las necesidades del usuario.  
 - 🗑️ **Eliminar** tareas que ya no sean necesarias.  
-- 🌐 **Arquitectura SOA**: Comunicación mediante servicios SOAP   
+- 🌐 **API Rest:se comunican a través de solicitudes HTTP para realizar funciones estándar de bases de datos, como crear, leer, actualizar y eliminar registros (también conocido como CRUD) dentro de un recurso.
 - ⚡ **Programación Asíncrona**: Optimización del rendimiento en la gestión de recursos compartidos.  
 - 🖥️ **Interfaz de Usuario Intuitiva**: Experiencia amigable y sencilla para interactuar con el sistema.
 
 ---
-
-## 🚀 Instalación  
-Sigue estos pasos para configurar el sistema:  
-1. Clona este repositorio:  
-   ```bash
-   git clone https://github.com/RicardoDomingosAlfredo/Sistema-de-Gestion-de-Tareas.git
