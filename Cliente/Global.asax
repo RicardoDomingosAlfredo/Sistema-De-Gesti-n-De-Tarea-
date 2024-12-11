@@ -1,23 +1,8 @@
-using System.Web.Http;
+<%@ Application Language="C#" Inherits="System.Web.HttpApplication" %>
 
-public class WebApiConfig
-{
-    public static void Register(HttpConfiguration config)
-    {
-        // Configura rutas de la API REST
-        config.MapHttpAttributeRoutes();
-
-        // Rutas predeterminadas de la API
-        config.Routes.MapHttpRoute(
-            name: "DefaultApi",
-            routeTemplate: "api/{controller}/{id}",
-            defaults: new { id = RouteParameter.Optional }
-        );
-    }
+<script runat="server">
+void Application_Start(object sender, EventArgs e) {
+    // Código de inicialización
+    GlobalConfiguration.Configure(WebApiConfig.Register); // Configuración de Web API
 }
-
-// En el método Application_Start, agrega:
-protected void Application_Start()
-{
-    GlobalConfiguration.Configure(WebApiConfig.Register);
-}
+</script>
