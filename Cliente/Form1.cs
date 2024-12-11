@@ -1,105 +1,135 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using Cliente.Data;
+using System.Threading.Tasks;
+using System.Data.Entity;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Cliente
 {
     public partial class Form1 : Form
     {
-        // Simulação de uma lista de tarefas
-        private List<Tarefa> tarefas = new List<Tarefa>();
+        private TaskDbContext context;
 
         public Form1()
         {
             InitializeComponent();
+            context = new TaskDbContext();
         }
 
-        // Evento para criar uma nova tarefa
-        private void button1_Click(object sender, EventArgs e)
+        private async void btnCrearTarea_Click(object sender, EventArgs e)
         {
-            string nomeTarefa = textBox1.Text;
-            if (!string.IsNullOrWhiteSpace(nomeTarefa))
+            // Verificar que el título no esté vacío
+            if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBoxDescripcion.Text))
             {
-                var novaTarefa = new Tarefa
-                {
-                    Id = tarefas.Count + 1,
-                    Nome = nomeTarefa,
-                    DataCriacao = DateTime.Now
-                };
-                tarefas.Add(novaTarefa);
-
-                MessageBox.Show("Tarefa criada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                AtualizarLista();
-                textBox1.Clear();
-            }
-            else
-            {
-                MessageBox.Show("O nome da tarefa não pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // Evento para listar tarefas
-        private void btnListarTarea_Click(object sender, EventArgs e)
-        {
-            AtualizarLista();
-        }
-
-        // Evento para modificar uma tarefa
-        private void btnModificarTarea_Click(object sender, EventArgs e)
-        {
-            if (tarefas.Count == 0)
-            {
-                MessageBox.Show("Nenhuma tarefa para modificar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Por favor, ingrese un título y una descripción para la tarea.");
                 return;
             }
 
-            string nomeAtualizado = textBox1.Text;
-            if (!string.IsNullOrWhiteSpace(nomeAtualizado))
+            // Crear una nueva tarea usando los valores de los TextBox
+            var tarea = new Tarea()
             {
-                var tarefa = tarefas[0]; // Para este exemplo, modifica a primeira tarefa
-                tarefa.Nome = nomeAtualizado;
+                Title = textBox1.Text,  // Usando el título ingresado
+                Description = textBoxDescripcion.Text,  // Usando la descripción ingresada
+                IsCompleted = false
+            };
 
-                MessageBox.Show("Tarefa modificada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                AtualizarLista();
-                textBox1.Clear();
+            // Crear una instancia del DbContext (si no se ha creado previamente)
+            using (var context = new TaskDbContext())
+            {
+                // Agregar la nueva tarea al DbSet
+                context.Tareas.Add(tarea);
+
+                // Guardar los cambios de manera asíncrona
+                await context.SaveChangesAsync();
+            }
+
+            // Mostrar mensaje de éxito y limpiar los TextBox
+            MessageBox.Show("Tarea creada exitosamente");
+            textBox1.Clear();
+            textBoxDescripcion.Clear();
+        }
+
+
+        private async void btnListarTarea_Click(object sender, EventArgs e)
+        {
+            var tareas = await context.Tareas.ToListAsync();
+            dataGridView1.DataSource = tareas;
+
+            dataGridView1.Columns["Id"].HeaderText = "ID";
+            dataGridView1.Columns["Title"].HeaderText = "Título";
+            dataGridView1.Columns["Description"].HeaderText = "Descripción";
+            dataGridView1.Columns["IsCompleted"].HeaderText = "Completada";
+        }
+
+        private async void btnModificarTarea_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(textBoxId.Text, out int tareaId))
+            {
+                MessageBox.Show("Por favor, seleccione una tarea válida.");
+                return;
+            }
+
+            var tarea = await context.Tareas.FindAsync(tareaId);
+
+            if (tarea != null)
+            {
+                tarea.Title = textBox1.Text;
+                tarea.Description = textBoxDescripcion.Text;
+                await context.SaveChangesAsync();
+
+                MessageBox.Show("Tarea modificada exitosamente");
+                await ListarTareas(); // Refresca la lista de tareas
             }
             else
             {
-                MessageBox.Show("O nome atualizado não pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Tarea no encontrada.");
             }
         }
 
-        // Evento para excluir uma tarefa
-        private void btnEliminarTarea_Click(object sender, EventArgs e)
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (tarefas.Count > 0)
+            if (e.RowIndex >= 0)
             {
-                tarefas.RemoveAt(0); // Para este exemplo, remove a primeira tarefa
-                MessageBox.Show("Tarefa removida com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                AtualizarLista();
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                textBox1.Text = row.Cells["Title"].Value.ToString();
+                textBoxDescripcion.Text = row.Cells["Description"].Value.ToString();
+                textBoxId.Text = row.Cells["Id"].Value.ToString(); // Si tienes un TextBox para el ID
+            }
+        }
+
+
+
+        private async void btnEliminarTarea_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(textBoxId.Text, out int tareaId))
+            {
+                MessageBox.Show("Por favor, seleccione una tarea válida.");
+                return;
+            }
+
+            var tarea = await context.Tareas.FindAsync(tareaId);
+
+            if (tarea != null)
+            {
+                context.Tareas.Remove(tarea);
+                await context.SaveChangesAsync();
+
+                MessageBox.Show("Tarea eliminada exitosamente");
+                await ListarTareas(); // Refresca la lista de tareas
             }
             else
             {
-                MessageBox.Show("Nenhuma tarefa para excluir.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Tarea no encontrada.");
             }
         }
-
-        // Atualiza a lista de tarefas no ListBox
-        private void AtualizarLista()
+        private async Task ListarTareas()
         {
-            listBox1.Items.Clear();
-            foreach (var tarefa in tarefas)
-            {
-                listBox1.Items.Add($"ID: {tarefa.Id}, Nome: {tarefa.Nome}, Criada em: {tarefa.DataCriacao}");
-            }
+            var tareas = await context.Tareas.ToListAsync();
+            dataGridView1.DataSource = tareas;
         }
-    }
 
-    // Classe Tarefa para simulação
-    public class Tarefa
-    {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public DateTime DataCriacao { get; set; }
     }
 }
