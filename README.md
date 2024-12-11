@@ -16,6 +16,7 @@ El **Sistema de Gestión de Tareas** es una aplicación distribuida diseñada pa
 - **C#**
 - **SQL**
 - **Entity Framework**
+- **SQL Server Management**
 ---
 ## 🔮 Funcionalidades Futuras
 - **Integración con calendarios externos.**
